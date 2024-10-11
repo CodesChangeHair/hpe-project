@@ -26,11 +26,28 @@ app.post('/upload', upload.single('video'), (req, res) => {
     return res.status(400).send('没有选择文件');
   }
 
+  // 存储后的文件路径
+  const filePath = path.join(__dirname, 'uploads', req.file.filename);
+  
+  // 调用 Python 脚本进行处理
+  const pythonProcess = spawn('python', ['script.py', filePath]);
+
+  pythonProcess.stdout.on('data', (data) => {
+    // 处理后的文件路径
+    const processedFilePath = data.toString().trim();
+    console.log(processedFilePath);
+
+    // 删除临时文件
+    // fs.unlinkSync(processedFilePath);
+
+  });
+
   res.send('文件上传成功');
 });
 
 // 创建 uploads 目录
 const fs = require('fs');
+const { spawn } = require('child_process');
 const uploadDir = './uploads';
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);

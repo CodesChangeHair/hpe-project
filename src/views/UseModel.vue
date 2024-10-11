@@ -1,5 +1,6 @@
 <template>
   <ContentCard>
+    <img src="../imgs/sample_video.gif" class="img-fluid rounded mx-auto d-block" alt="HPE example">
     <input type="file" @change="handleFileUpload" accept="video/*" />
     <button @click="uploadFile" class="btn btn-info" >上传</button>
   </ContentCard>
